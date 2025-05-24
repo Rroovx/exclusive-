@@ -1,0 +1,470 @@
+/* --- Global & Body --- */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fff7f9;
+  color: #333;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* --- Headings --- */
+h1 {
+  text-align: center;
+  color: #ff6f91;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* --- Questions --- */
+.question {
+  display: none;
+  margin-top: 30px;
+}
+.question.active {
+  display: block;
+}
+.question p {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* --- Options --- */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.option-box {
+  background-color: #fff;
+  border: 2px solid #ff6f91;
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+}
+.option-box:hover {
+  background-color: #ffd6de;
+  transform: scale(1.02);
+}
+input[type="radio"] {
+  display: none;
+}
+input[type="radio"]:checked + .option-box {
+  background-color: #ff6f91;
+  color: #fff;
+  border-color: #ff6f91;
+}
+
+/* --- Buttons --- */
+.btn {
+  display: block;
+  margin: 30px auto 10px;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background-color: #ff6f91;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+.btn:hover {
+  background-color: #ff9671;
+  transform: scale(1.05);
+}
+
+/* --- Loading Spinner --- */
+#loading {
+  margin: 20px auto;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #ff6f91;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: none;
+}
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- Gift Box --- */
+#giftBox {
+  display: none;
+  width: 140px;
+  height: 140px;
+  margin: 30px auto;
+  background-color: #ff9aa2; /* lighter pink for the box */
+  border-radius: 16px;
+  position: relative;
+  box-shadow: 0 8px 15px rgba(255, 154, 162, 0.6);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  animation: popIn 0.5s ease-out forwards;
+}
+
+/* Horizontal ribbon */
+#giftBox::before {
+  content: "";
+  position: absolute;
+  top: 60px; /* middle vertically */
+  left: 0;
+  width: 100%;
+  height: 24px;
+  background: linear-gradient(90deg, #d56a85, #f08cae);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18);
+  border-radius: 12px;
+  z-index: 1;
+}
+
+/* Vertical ribbon */
+#giftBox::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 58px; /* center horizontally */
+  width: 24px;
+  height: 100%;
+  background: linear-gradient(180deg, #d56a85, #f08cae);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18);
+  border-radius: 12px;
+  z-index: 1;
+}
+
+/* Bow on top */
+#giftBox .bow {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  transform: translateX(-50%);
+  z-index: 2;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.12));
+  perspective: 600px;
+}
+
+/* Bow loops */
+#giftBox .bow::before,
+#giftBox .bow::after {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 50px;
+  background: linear-gradient(135deg, #d56a85, #f08cae);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 5px 8px rgba(0,0,0,0.2);
+  top: 10px;
+}
+
+/* Left loop */
+#giftBox .bow::before {
+  left: 0;
+  transform: rotate(-25deg) skew(-10deg);
+  transform-origin: bottom right;
+  animation: bowSwing 3s ease-in-out infinite alternate;
+}
+
+/* Right loop */
+#giftBox .bow::after {
+  right: 0;
+  transform: rotate(25deg) skew(10deg);
+  transform-origin: bottom left;
+  animation: bowSwing 3s ease-in-out infinite alternate reverse;
+}
+
+/* Center knot */
+#giftBox .bow .knot {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #b1506f, #d56a85);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+}
+
+/* Hover */
+#giftBox:hover {
+  box-shadow: 0 12px 30px rgba(240, 140, 174, 0.8);
+  transform: scale(1.12);
+  background-color: #f08cae;
+}
+
+/* Pop-in animation */
+@keyframes popIn {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Bow swinging animation */
+@keyframes bowSwing {
+  0% { transform: rotate(-25deg) skew(-10deg); }
+  100% { transform: rotate(-15deg) skew(-8deg); }
+}
+
+
+/* --- Flip Cards Container --- */
+#flipCardsContainer {
+  display: flex;
+  gap: 32px;
+  padding: 32px 24px;
+  margin: 40px auto 0;
+  max-width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#flipCardsContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Flip Cards --- */
+.flip-card {
+  width: 220px;
+  height: 300px;
+  perspective: 1000px;
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  animation: fadeInCard 0.6s ease forwards;
+  opacity: 0;
+  user-select: none;
+}
+.flip-card:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.flip-card:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.flip-card:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.flip-card:nth-child(4) {
+  animation-delay: 0.8s;
+}
+.flip-card:nth-child(5) {
+  animation-delay: 1s;
+}
+.flip-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+.flip-card::after {
+  content: "Click to flip";
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.flip-card:hover::after {
+  opacity: 1;
+}
+
+/* --- Flip Card Inner --- */
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* --- Front and Back Sides --- */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+.flip-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.flip-card-back {
+  background-color: #ff6f91;
+  color: white;
+  transform: rotateY(180deg);
+  padding: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  word-wrap: break-word;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+/* --- Animations --- */
+@keyframes fadeInCard {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  #flipCardsContainer {
+    gap: 16px;
+    padding: 24px 8px;
+  }
+  .flip-card {
+    width: 140px;
+    height: 200px;
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+/* --- Page Loading Overlay --- */
+#pageLoading {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff6f91, #ffcccb);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  user-select: none;
+  z-index: 9999;
+  text-shadow: 0 0 12px rgba(255,255,255,0.9);
+  animation: fadeIn 0.5s ease forwards;
+}
+#pageLoading #spinner {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 24px;
+  border: 8px solid rgba(255, 255, 255, 0.3);
+  border-top: 8px solid white;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+  box-shadow: 0 0 15px rgba(255,255,255,0.8);
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* --- Cards Section --- */
+#cardsSection {
+  max-width: 1000px;
+  margin: 40px auto 0;
+  padding: 0 16px;
+  display: none;
+  animation: fadeInScale 0.5s ease forwards 0.6s;
+  opacity: 0;
+}
+#cardsSection h2 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #ff6f91;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* --- Improved Entrance Animations --- */
+@keyframes slideFadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-25px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes slideFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* --- Animation with better easing and timing --- */
+#pageTitle {
+  opacity: 0;
+  animation: slideFadeDown 1s ease-out forwards 0.3s;
+}
+#startBtn {
+  opacity: 0;
+  animation: slideFadeUp 1s ease-out forwards 0.7s;
+}
+
+/* --- Start page container wrapper --- */
+#startPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
