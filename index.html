@@ -3,282 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <title>Love Test Game with Flip Cards</title>
-  <style>
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #fff3f3;
-    color: #333;
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
-  }
-
-  h1 {
-    text-align: center;
-    color: #e91e63;
-  }
-
-  .question {
-    display: none;
-    margin-top: 30px;
-  }
-
-  .question.active {
-    display: block;
-  }
-
-  .question p {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  .options {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .option-box {
-    border: 2px solid #e91e63;
-    padding: 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
-    text-align: center;
-    font-weight: bold;
-    background-color: #fff;
-    user-select: none;
-  }
-
-  .option-box:hover {
-    background-color: #ffe0ec;
-  }
-
-  input[type="radio"] {
-    display: none;
-  }
-
-  input[type="radio"]:checked + .option-box {
-    background-color: #e91e63;
-    color: white;
-    border-color: #e91e63;
-  }
-
-  .btn {
-    background: #e91e63;
-    color: #fff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-    margin: 30px auto 10px;
-    transition: background 0.3s ease;
-  }
-
-  .btn:hover {
-    background: #d81b60;
-  }
-
-  #loading {
-    display: none;
-    margin: 20px auto;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #e91e63;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg);}
-    100% { transform: rotate(360deg);}
-  }
-
-  #giftBox {
-    display: none;
-    margin: 30px auto;
-    width: 120px;
-    height: 120px;
-    background: #e91e63;
-    border-radius: 20px;
-    position: relative;
-    box-shadow: 0 0 20px #e91e63;
-    cursor: pointer;
-  }
-
-  #giftBox::before, #giftBox::after {
-    content: "";
-    position: absolute;
-    background: #fff;
-    border-radius: 10px;
-  }
-
-  #giftBox::before {
-    width: 40px;
-    height: 120px;
-    left: 40px;
-    top: 0;
-  }
-
-  #giftBox::after {
-    width: 120px;
-    height: 40px;
-    top: 40px;
-    left: 0;
-  }
-
-  #giftBox:hover {
-    box-shadow: 0 0 30px #ff69b4;
-    transform: scale(1.05);
-    transition: 0.3s;
-  }
-
- #flipCardsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px; 
-  padding: 40px 20px;
-  margin-top: 40px;
-}
-
-
-  .flip-card {
-    background-color: transparent;
-    width: 160px;
-    height: 160px;
-    perspective: 1000px;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-  }
-
-  .flip-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-  }
-
-  .flip-card::after {
-    content: 'Click to flip';
-    position: absolute;
-    bottom: -24px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.7);
-    color: #fff;
-    padding: 3px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-    opacity: 0;
-    white-space: nowrap;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
-  .flip-card:hover::after {
-    opacity: 1;
-  }
-
-  .flip-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-  }
-
-  .flip-card.flipped .flip-card-inner {
-    transform: rotateY(180deg);
-  }
-
-  .flip-card-front, .flip-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
-    backface-visibility: hidden;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  }
-
-  .flip-card-front {
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .flip-card-front img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-  }
-
-  .flip-card-back {
-    background-color: #e91e63;
-    color: white;
-    transform: rotateY(180deg);
-    padding: 15px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-  }
-
-
-#pageLoading {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #e91e63;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  flex-direction: column;
-  user-select: none;
-}
-
-#pageLoading #spinner {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid white;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
-}
-
-
-</style>
+   <link rel="stylesheet" href="love.css" >
 
 </head>
 
 
  <body>
-  <!-- Initial Loading Screen -->
-  <div id="pageLoading">
-    <div id="spinner"></div>
-    Loading, teka lang HAHAHAH
-  </div>
 
-  <h1 id="pageTitle">💘 Happy 18 💘</h1>
+<div id="pageLoading">
+  <div id="spinner"></div>
+  Loading... Saglit lang ha! <br />
+  <small>Preparing your special surprises 💖🎉</small>
+</div>
+
+
+  <h1 id="pageTitle">💘 For My Maacm 💘</h1>
 
  
-  <audio id="backgroundMusic" src="music/toe.mp3" preload="auto"></audio>
+  <audio id="backgroundMusic" src="music/SM.mp3" preload="auto"></audio>
 
  
   <button type="button" id="startBtn" class="btn">Start</button>
@@ -286,324 +28,122 @@
 
 
 <form id="quizForm">
-<div class="question active" id="q1">
-    <p>1. Sino ang all-time favorite kong Pilipino singer?</p>
+  <div class="question active" id="q1">
+    <p>1. Ano ang paborito kong pagkain?</p>
     <div class="options">
-      <label><input type="radio" name="q1" value="Sarah G" /><div class="option-box">Sarah G</div></label>
-      <label><input type="radio" name="q1" value="Moira" /><div class="option-box">Moira</div></label>
-      <label><input type="radio" name="q1" value="Fyang" /><div class="option-box">Fyang</div></label>
+      <label><input type="radio" name="q1" value="Adobo" /><div class="option-box">Adobo</div></label>
+      <label><input type="radio" name="q1" value="Sinigang" /><div class="option-box">Sinigang</div></label>
+      <label><input type="radio" name="q1" value="Lechon" /><div class="option-box">Lechon</div></label>
     </div>
-</div>
-
-<div class="question" id="q2">
-    <p>2. Ano favorite kong character/hero sa ML?</p>
-    <div class="options">
-      <label><input type="radio" name="q2" value="Nana" /><div class="option-box">Nana</div></label>
-      <label><input type="radio" name="q2" value="Layla" /><div class="option-box">Layla</div></label>
-      <label><input type="radio" name="q2" value="Chang'e" /><div class="option-box">Chang'e</div></label>
-    </div>
-</div>
-
-<div class="question" id="q3">
-    <p>3. Ano favorite song ko?</p>
-    <div class="options">
-      <label><input type="radio" name="q3" value="Kathang Isip" /><div class="option-box">Kathang Isip</div></label>
-      <label><input type="radio" name="q3" value="Tayong Dalawa" /><div class="option-box">Tayong Dalawa</div></label>
-      <label><input type="radio" name="q3" value="Tayong Tatlo" /><div class="option-box">Tayong Tatlo</div></label>
-    </div>
-</div>
-
-<div class="question" id="q4">
-    <p>4. Sino celebrity crush ko?</p>
-    <div class="options">
-      <label><input type="radio" name="q4" value="Harry Roque" /><div class="option-box">Harry Roque</div></label>
-      <label><input type="radio" name="q4" value="Harry Styles" /><div class="option-box">Harry Styles</div></label>
-      <label><input type="radio" name="q4" value="Jay" /><div class="option-box">Jay</div></label>
-    </div>
-</div>
-
-<div class="question" id="q5">
-    <p>5. Ano favorite animals ko?</p>
-    <div class="options">
-      <label><input type="radio" name="q5" value="Cats" /><div class="option-box">Cats</div></label>
-      <label><input type="radio" name="q5" value="Dogs" /><div class="option-box">Dogs</div></label>
-      <label><input type="radio" name="q5" value="Ikaw" /><div class="option-box">Ikaw</div></label>
-    </div>
-</div>
-
-<div class="question" id="q6">
-    <p>6. Saan ako takot?</p>
-    <div class="options">
-      <label><input type="radio" name="q6" value="Kay Lord" /><div class="option-box">Kay Lord</div></label>
-      <label><input type="radio" name="q6" value="Sa Nanay Mo" /><div class="option-box">Sa Nanay Mo</div></label>
-      <label><input type="radio" name="q6" value="Multo" /><div class="option-box">Multo</div></label>
-    </div>
-</div>
-
-<div class="question" id="q7">
-    <p>7. Ano nakakapag painit ng ulo ko?</p>
-    <div class="options">
-      <label><input type="radio" name="q7" value="Ikaw" /><div class="option-box">Ikaw</div></label>
-      <label><input type="radio" name="q7" value="Walang Internet" /><div class="option-box">Walang Internet</div></label>
-      <label><input type="radio" name="q7" value="Pag Gutom" /><div class="option-box">Pag Gutom</div></label>
-    </div>
-</div>
-
-<div class="question" id="q8">
-    <p>8. Mostly what color ng damit sinusuot ko?</p>
-    <div class="options">
-      <label><input type="radio" name="q8" value="White" /><div class="option-box">White</div></label>
-      <label><input type="radio" name="q8" value="Black" /><div class="option-box">Black</div></label>
-      <label><input type="radio" name="q8" value="Red" /><div class="option-box">Red</div></label>
-    </div>
-</div>
-
-<div class="question" id="q9">
-    <p>9. Ano favorite color ko?</p>
-    <div class="options">
-      <label><input type="radio" name="q9" value="Pink" /><div class="option-box">Pink</div></label>
-      <label><input type="radio" name="q9" value="Brown" /><div class="option-box">Brown</div></label>
-      <label><input type="radio" name="q9" value="Blue" /><div class="option-box">Blue</div></label>
-    </div>
-</div>
-
-<div class="question" id="q10">
-    <p>10. Ano favorite movie/series ko?</p>
-    <div class="options">
-      <label><input type="radio" name="q10" value="Start-Up" /><div class="option-box">Start-Up</div></label>
-      <label><input type="radio" name="q10" value="Vincenzo" /><div class="option-box">Vincenzo</div></label>
-      <label><input type="radio" name="q10" value="Reply 1988" /><div class="option-box">Reply 1988</div></label>
-    </div>
-</div>
-</form>
-
-<button type="button" id="nextBtn" class="btn">Next</button>
-<button type="button" id="submitBtn" class="btn">Submit</button>
-<button type="button" id="tryAgainBtn" class="btn" style="display:none;">Try Again</button>
-<button id="endBtn" class="btn" style="display:none;">End</button>
-
-
-
-<div id="loading">
-    <div class="spinner"></div>
-    <p id="loading-text"></p>
   </div>
 
-  <div id="giftBox" title="Click me!"></div>
+  <div class="question" id="q2">
+    <p>2. Ano ang paborito kong libangan?</p>
+    <div class="options">
+      <label><input type="radio" name="q2" value="Gaming" /><div class="option-box">Gaming</div></label>
+      <label><input type="radio" name="q2" value="Reading" /><div class="option-box">Reading</div></label>
+      <label><input type="radio" name="q2" value="Watching" /><div class="option-box">Watching</div></label>
+    </div>
+  </div>
+
+  <div class="question" id="q3">
+    <p>3. Anong genre ng musika ang gusto ko?</p>
+    <div class="options">
+      <label><input type="radio" name="q3" value="Pop" /><div class="option-box">Pop</div></label>
+      <label><input type="radio" name="q3" value="Rock" /><div class="option-box">Rock</div></label>
+      <label><input type="radio" name="q3" value="R&B" /><div class="option-box">R&B</div></label>
+    </div>
+  </div>
+
+  <div class="question" id="q4">
+    <p>4. Ano ang gusto kong gawin tuwing weekend?</p>
+    <div class="options">
+      <label><input type="radio" name="q4" value="Relax" /><div class="option-box">Just relax</div></label>
+      <label><input type="radio" name="q4" value="Sleep" /><div class="option-box">Sleep</div></label>
+      <label><input type="radio" name="q4" value="Movie" /><div class="option-box">Watch movies</div></label>
+    </div>
+  </div>
+
+  <div class="question" id="q5">
+    <p>5. Ano ang paborito kong inumin?</p>
+    <div class="options">
+      <label><input type="radio" name="q5" value="Coffee" /><div class="option-box">Coffee</div></label>
+      <label><input type="radio" name="q5" value="Tea" /><div class="option-box">Tea</div></label>
+      <label><input type="radio" name="q5" value="Softdrink" /><div class="option-box">Softdrinks</div></label>
+    </div>
+  </div>
+
+  <div class="question" id="q6">
+    <p>6. Ano ang pinaka-natatakot ako?</p>
+    <div class="options">
+      <label><input type="radio" name="q6" value="Heights" /><div class="option-box">Heights</div></label>
+      <label><input type="radio" name="q6" value="sa nanay mo" /><div class="option-box">sa nanay mo</div></label>
+      <label><input type="radio" name="q6" value="Insects" /><div class="option-box">Insects</div></label>
+    </div>
+  </div>
+
+  <div class="question" id="q7">
+    <p>7. Ano ang nakakapagpasaya sa akin?</p>
+    <div class="options">
+      <label><input type="radio" name="q7" value="Family" /><div class="option-box">Being with family</div></label>
+      <label><input type="radio" name="q7" value="Friends" /><div class="option-box">Being with friends</div></label>
+      <label><input type="radio" name="q7" value="Sleep" /><div class="option-box">Sleeping</div></label>
+    </div>
+  </div>
+
+  <div class="question" id="q8">
+    <p>8. Ano ang paborito kong lugar puntahan?</p>
+    <div class="options">
+      <label><input type="radio" name="q8" value="Beach" /><div class="option-box">Beach</div></label>
+      <label><input type="radio" name="q8" value="Home" /><div class="option-box">Home</div></label>
+      <label><input type="radio" name="q8" value="Park" /><div class="option-box">Park</div></label>
+    </div>
+  </div>
+
+  <div class="question" id="q9">
+    <p>9. Ano ang gusto kong maging sa hinaharap?</p>
+    <div class="options">
+      <label><input type="radio" name="q9" value="WorkAbroad" /><div class="option-box">Work abroad</div></label>
+      <label><input type="radio" name="q9" value="Business" /><div class="option-box">Have a business</div></label>
+      <label><input type="radio" name="q9" value="StudyMore" /><div class="option-box">studyingmore</div></label>
+    </div>
+  </div>
+
+  <div class="question" id="q10">
+    <p>10. Ano ang dream vacation ko?</p>
+    <div class="options">
+      <label><input type="radio" name="q10" value="Japan" /><div class="option-box">Japan</div></label>
+      <label><input type="radio" name="q10" value="Korea" /><div class="option-box">Korea</div></label>
+      <label><input type="radio" name="q10" value="Bali" /><div class="option-box">Bali</div></label>
+    </div>
+  </div>
+</form>
+
+<div id="cardsSection">
+  <h2>Hi, Photo Message</h2>         
   <div id="flipCardsContainer"></div>
+</div>
 
-<script>
+<button type="button" id="submitBtn" class="btn">Submit</button>
+<button type="button" id="tryAgainBtn" class="btn" style="display:none;">Try Again</button>
+<button type="button" id="endBtn" class="btn" style="display:none; margin-top: 20px; margin-left: 550px;"> End</button>
 
-const startBtn = document.getElementById("startBtn");
-const backgroundMusic = document.getElementById("backgroundMusic");
-const loading = document.getElementById("loading");
-const pageLoading = document.getElementById("pageLoading");
-const pageTitle = document.getElementById("pageTitle");
-const quizForm = document.getElementById("quizForm");
-const questions = document.querySelectorAll(".question");
-const nextBtn = document.getElementById("nextBtn");
-const submitBtn = document.getElementById("submitBtn");
-const tryAgainBtn = document.getElementById("tryAgainBtn");
-const giftBox = document.getElementById("giftBox");
-const flipCardsContainer = document.getElementById("flipCardsContainer");
 
-// Answers keyed by question id
-const answers = {
-  q1: "Sarah G",
-  q2: "Chang'e",
-  q3: "Tayong Dalawa",
-  q4: "Harry Styles",
-  q5: "Ikaw",
-  q6: "Kay Lord",
-  q7: "Ikaw",
-  q8: "White",
-  q9: "Brown",
-  q10: "Start-Up"
-};
-
-const flipCardsData = [
-  { img: "images/IMG_20240722_223642_480.jpg", message: "hi love tagal diba, hindi ko kasi maayos ung music HAHHAAHHAA" },
-  { img: "images/IMG_20240921_185615_311.webp", message: "hi,masyado ka naman excited, matulog ka na ha" },
-  { img: "images/IMG_20240927_184607_814.jpg", message: "Buti naman naka perfect scores ka kung hindi edi wala ka sana rito bleh" },
-  { img: "images/IMG_20241030_144844_493.jpg", message: "Panis ka na naman sa akin hano" },
-  { img: "images/IMG_20250117_191904_475.jpg", message: "love kita kahit maacm kana, maliligo ka kasi HAHAHHAHAHAH" },
-  { img: "images/IMG_20250304_205052_400.jpg", message: "Kay Lord ako takot. BLEH " },
-  { img: "images/IMG_20250313_134419_121.jpg", message: "I love you ay may space baka may maka singit jan iloveyou" },
-  { img: "images/IMG_20250322_184257_103.jpg", message: "Next time na lang ung iba HAHHAAHA short time e HAHAHHAHHHAHA" }
-];
-
-let currentQuestion = 0;
-let score = 0;  // <--- dito natin ite-track ang tama
-
-// Initial UI state
-pageLoading.style.display = 'flex';
-pageTitle.style.display = 'none';
-startBtn.style.display = 'none';
-quizForm.style.display = 'none';
-nextBtn.style.display = 'none';
-submitBtn.style.display = 'none';
-tryAgainBtn.style.display = 'none';
-loading.style.display = 'none';
-giftBox.style.display = 'none';
-flipCardsContainer.style.display = 'none';
-
-setTimeout(() => {
-  pageLoading.style.display = 'none';
-  pageTitle.style.display = 'block';
-  startBtn.style.display = 'block';
-}, 3000);
-
-function showQuestion(index) {
-  questions.forEach((q, i) => q.classList.toggle('active', i === index));
-  nextBtn.style.display = index < questions.length - 1 ? 'block' : 'none';
-  submitBtn.style.display = index === questions.length - 1 ? 'block' : 'none';
-}
-
-startBtn.addEventListener('click', () => {
-  startBtn.style.display = 'none';
-  backgroundMusic.play().catch(() => {});
-  quizForm.style.display = 'block';
-  currentQuestion = 0;
-  score = 0;  // reset score kapag nagsimula ulit
-  showQuestion(currentQuestion);
-});
-
-nextBtn.addEventListener("click", () => {
-  currentQuestion++;
-  showQuestion(currentQuestion);
-});
-
-submitBtn.addEventListener("click", () => {
-  const current = questions[currentQuestion];
-  const selected = current.querySelector("input[type='radio']:checked");
-  if (!selected) {
-    alert("Pili ka muna ng sagot bago i-submit!");
-    return;
-  }
-
-  const questionId = current.id;
-  const userAnswer = selected.value;
-  const correctAnswer = answers[questionId];
-
-  if (userAnswer !== correctAnswer) {
-    alert("Mali ang sagot mo, try again!");
-    submitBtn.style.display = "none";
-    tryAgainBtn.style.display = "block";  // show lang pag may mali agad
-    return;
-  }
-
-  // Tama ang sagot, dagdagan ang score
-  score++;
-
-  // Check if last question
-  if (currentQuestion === questions.length - 1) {
-    // Ipakita gift box pagkatapos ng loading
-    quizForm.style.display = "none";
-    submitBtn.style.display = "none";
-    loading.style.display = "block";
-
-    setTimeout(() => {
-      loading.style.display = "none";
-      giftBox.style.display = "block";
-      flipCardsContainer.style.display = "none";
-
-      // Try again button will show only if not perfect
-      if (score < questions.length) {
-        tryAgainBtn.style.display = "block";
-      }
-    }, 2000);
-  } else {
-    // Hindi pa last question, next question na
-    currentQuestion++;
-    showQuestion(currentQuestion);
-  }
-});
+<div id="loading" style="display:none;">
+  <div class="spinner"></div>
+  <p id="loading-text"></p>
+</div>
 
 
 
-// Try Again button handler (reset quiz)
-tryAgainBtn.addEventListener("click", () => {
-  score = 0;
-  currentQuestion = 0;
-  tryAgainBtn.style.display = "none";
-  giftBox.style.display = "none";
-  flipCardsContainer.style.display = "none";
-  quizForm.style.display = "block";
-  submitBtn.style.display = "block";
-  nextBtn.style.display = "block";
+<div id="giftBox" title="Click me!"></div>
 
-  // Uncheck all radios
-  quizForm.querySelectorAll("input[type='radio']").forEach(input => input.checked = false);
-
-  showQuestion(currentQuestion);
-});
-
-// Show flip cards on gift box click
-giftBox.addEventListener("click", () => {
-  giftBox.style.display = "none";
-  flipCardsContainer.style.display = "flex";
-  flipCardsContainer.innerHTML = "";
-
-  flipCardsData.forEach(({ img, message }) => {
-    const card = document.createElement("div");
-    card.className = "flip-card";
-    card.innerHTML = `
-      <div class="flip-card-inner">
-        <div class="flip-card-front">
-          <img src="${img}" alt="Card Image">
-        </div>
-        <div class="flip-card-back">${message}</div>
-      </div>
-    `;
-    card.addEventListener("click", () => card.classList.toggle("flipped"));
-    flipCardsContainer.appendChild(card);
-
-
-const endBtn = document.getElementById("endBtn");
-
-// … inside your submitBtn timeout, after showing giftBox …
-setTimeout(() => {
-  loading.style.display = "none";
-
-  // only show Try Again if not perfect
-  tryAgainBtn.style.display = (score < questions.length) ? "block" : "none";
-  
-  // now un-hide the End button
-  endBtn.style.display = "block";
-}, 2000);
-
-
-// End button handler
-endBtn.onclick = () => {
-  // hide everything else
-  quizForm.style.display         = "none";
-  nextBtn.style.display          = "none";
-  submitBtn.style.display        = "none";
-  tryAgainBtn.style.display      = "none";
-  giftBox.style.display          = "none";
-  flipCardsContainer.style.display = "none";
-
-  // show your bye-bye loader/message
-  loading.innerHTML = `
-    <div class="spinner"></div>
-    <p style="text-align:center;">Bye bye :(</p>
-  `;
-  loading.style.display = "block";
-
-
-  setTimeout(() => {
-    window.close();
-  }, 500);
-};
+<div id="byeMessage" style="display:none; text-align:center; font-size:24px; color:#ff6f91; margin-top:20px;">
+  Bye! </div>
 
 
 
-
-  });
-});
-
-
-  </script>
+<script src="love.js"></script>
 
 </body>
 </html>
